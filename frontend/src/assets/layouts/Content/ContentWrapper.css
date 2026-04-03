@@ -1,0 +1,74 @@
+/* Корневой блок, который тянется на всю высоту и ширину */
+.main {
+  grid-column: 2;
+  width: 100%;
+  min-height: 100vh;
+  display: grid;
+  box-sizing: border-box;
+}
+
+/* Контейнер с layout: header | content | footer */
+.main-container {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+  width: 100%; /* 👈 ОБЯЗАТЕЛЬНО */
+  max-width: 100%;
+  padding: 0 40px;
+  box-sizing: border-box;
+  gap: 15px;
+}
+
+/* Футер */
+.footer {
+  display: none;
+  background-color: #f5f5f5;
+  padding: 20px;
+  text-align: center;
+}
+
+.sidebar_contacts {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.contacts_links {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.contats_itc {
+  width: 24px;
+  height: 24px;
+}
+
+@media (min-width: 600px) and (max-width: 767px) {
+  .main-container {
+    padding: 0; 
+  }
+
+  header {
+    z-index: 99;
+  }
+
+  .footer {
+    display: block;
+  }
+ }
+
+@media (max-width: 599px) {
+  .main-container {
+    padding: 0; 
+  }
+
+  header {
+    z-index: 99;
+  }
+
+  .footer {
+    display: block;
+  }
+}

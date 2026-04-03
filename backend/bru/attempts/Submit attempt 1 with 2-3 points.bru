@@ -1,0 +1,28 @@
+meta {
+  name: Submit attempt 1 with 2/3 points
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8000/attempts/1/submit/
+  body: json
+  auth: inherit
+}
+
+body:json {
+  [
+    {
+      "id": 0,
+      "answer": "1" // incorrect
+    },
+    {
+      "id": 1,
+      "answer": ["3", "-3"] // correct
+    },
+    {
+      "id": 2,
+      "answer": "квадратное" // correct
+    }
+  ]
+}

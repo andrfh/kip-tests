@@ -1,0 +1,40 @@
+
+.light_green {
+    color: rgb(105, 207, 22);
+    font-weight: 600;
+}
+
+.green {
+    color: rgb(47, 100, 4);
+    font-weight: 600;
+}
+
+.orange {
+    color: rgb(203, 102, 1);
+    font-weight: 600; 
+}
+
+.red {
+    color: rgb(230, 21, 21);
+    font-weight: 600;
+}
+
+.gray {
+    background: rgb(0, 0, 0);
+    font-weight: 600;
+}
+
+.even-row {
+    background-color: #ffffff;
+}
+
+.odd-row {
+    background-color: #f1f1f1;
+}
+
+.result_ticket-name {
+    max-width: 200px;
+    text-overflow: ellipsis;
+    white-space: nowrap; 
+    overflow: hidden;
+}

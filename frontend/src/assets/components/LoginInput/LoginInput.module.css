@@ -1,0 +1,48 @@
+.loginInput_label {
+    margin-bottom: 12px;
+
+    text-align: left;
+
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 15px;
+}
+
+.loginInput_input {
+    width: 300px;
+    height: 36px;
+
+    margin-bottom: 18px;
+    padding: 10px 14px;
+
+    text-align: left;
+
+    border: 1px solid #D6D7DD;
+    border-radius: 9px;
+
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 15px;
+}
+
+/* .loader {
+    position: absolute;
+    right: 20px;
+    width: 20px;
+    height: 20px;
+    border: 3px solid var(--grey);
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}  */

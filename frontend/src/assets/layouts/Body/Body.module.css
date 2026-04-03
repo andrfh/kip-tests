@@ -1,0 +1,16 @@
+.body {
+    display: grid;
+    grid-template-columns: 270px auto;
+}
+
+@media (min-width: 600px) and (max-width: 767px) {
+  .body {
+        display: block;
+    }
+}
+
+@media (max-width: 599px) {
+    .body {
+        display: block;
+    }
+}

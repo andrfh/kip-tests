@@ -1,0 +1,21 @@
+.main_title {
+    margin-bottom: 45px;
+}
+
+
+@media (min-width: 600px) and (max-width: 767px) {
+  .newTicket {
+    padding: 0 15px;
+    transition: 0.3s all;
+}
+
+}
+
+@media (max-width: 599px) {
+    
+.newTicket {
+    padding: 0 15px;
+    transition: 0.3s all;
+}
+
+}

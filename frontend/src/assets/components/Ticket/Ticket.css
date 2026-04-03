@@ -1,0 +1,77 @@
+.ticket {
+    border: 2px solid var(--primary);
+    border-radius: 12px;
+    box-shadow: 0 0px 10px var(--primary);
+    padding: 20px 25px;
+    transition: all 0.3s;
+}
+
+.ticket:hover {
+    box-shadow: 0 0px 20px var(--primary);
+    transform: scale(1.02);
+}
+
+.ticket > h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--ticket_title);
+    width: 300px;
+	overflow: hidden;
+    text-wrap: nowrap;
+	text-overflow: ellipsis;
+}
+
+.ticket > p {
+    font-size: 1rem;
+    font-weight: 500;
+    opacity: 70%;
+    margin-top: 5px;
+}
+
+.ticket_info {
+    display: flex;
+    justify-content: space-between;
+    margin: 16px 0 16px 0;
+}
+
+.ticket_info-time, .ticket_info-questions {
+    display: flex;
+    gap: 8px;
+}
+
+.ticket_status {
+    display: inline-block;
+    color: var(--ticket-status-danger);
+    background: var(--ticket-status-danger-bg);
+    padding: 7px 14px;
+    font-size: 1rem;
+    border-radius: 12px;
+    margin: 16px 0 10px 0;
+}
+
+.ticket_progress {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.ticket_progress-bar {
+    width: 100%;
+    background: var(--no-active);
+    border-radius: 20px;
+    height: 8px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.ticket_progress-bar > span {
+    position: absolute;
+    background: var(--primary-gradient);
+    border-radius: 20px;
+    height: 8px;
+    margin-bottom: 10px;
+}
+
+.ticket_button {
+    width: 100%;
+}

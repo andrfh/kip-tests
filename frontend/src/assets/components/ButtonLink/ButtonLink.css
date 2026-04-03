@@ -1,0 +1,34 @@
+.primary-link {
+    color: var(--white);
+    cursor: pointer;
+
+    border: 1px solid var(--primary-gradient);
+    border-radius: 53px;
+    width: 100%;
+    height: 25px;
+    text-align: center;
+
+    background: var(--primary-gradient);
+}
+
+.ghost-link {
+    color: var(--black);
+    cursor: pointer;
+
+    border: 1px solid var(--white);
+    border-radius: 53px;
+    width: 100%;
+    height: 25px;
+    text-align: center;
+    background: var(--white);
+
+    box-shadow: 3px 2px 49px 0 var(--shadow);
+}
+
+.primary:hover {
+    box-shadow: 3px 2px 49px 0 rgba(0, 0, 0, 0.3);
+}
+
+.ghost:hover {
+    box-shadow: 3px 2px 49px 0 rgba(0, 0, 0, 0.3);
+}

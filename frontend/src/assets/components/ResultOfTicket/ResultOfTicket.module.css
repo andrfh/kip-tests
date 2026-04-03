@@ -1,0 +1,233 @@
+/* @property --progress-value {
+  syntax: "<integer>";
+  initial-value: 0;
+  inherits: false;
+}
+
+@keyframes progress {
+ to { --progress-value: 40; }
+}
+
+.progress-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: 
+  radial-gradient(closest-side, white 79%, transparent 80% 100%),
+  conic-gradient(#27AE60 calc(var(--progress-value) * 1%), #D2D2D2 0);
+  animation: progress 2s 1 forwards;
+}
+
+.progress-bar::before {
+  counter-reset: percentage var(--progress-value);
+  content: counter(percentage) '%';
+  animation: progress 2s 1 forwards;
+}
+r
+progress {
+  visibility: hidden;
+  width: 0;
+  height: 0;
+} */
+
+.modal-title {
+  margin: 20px 0 0 20px;
+}
+
+.modal-body {
+  max-width: 1322px;
+}
+
+.main_title {
+  font-size: 26px;
+}
+
+.result_stroke {
+  margin-top: 15px;
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.result_stroke-ticket, .result_stroke-score, .result_stroke-mark {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+
+}
+
+.result_stroke-ticket h2{
+  font-size: 22px;
+  font-weight: 600;
+
+}
+
+.result_stroke-ticket p{
+  color: #828282;
+}
+
+.result_stroke-score h2{
+  font-size: 26px;
+  font-weight: 600;
+}
+
+.result_stroke-score p{
+  font-size: 32px;
+  font-weight: 700;
+  color: #828282;
+}
+
+.result_stroke-mark h2{
+  font-size: 26px;
+  font-weight: 600;
+}
+
+.result_stroke-mark p{
+  font-size: 32px;
+  font-weight: 700;
+  color: #D2D2D2;
+}
+
+.result_stroke-info h2 {
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.result_stroke-info p {
+  color: #828282;
+}
+
+.modal-body {
+  margin: 20px;
+}
+
+.progressBarContainer {
+  display: flex;
+
+  align-items: center;
+  height: 150px;
+}
+
+circle {
+  fill: none;
+  transform: rotate(-90deg); /* Поворачиваем круг, чтобы старт был сверху */
+  transform-origin: 50% 50%;
+}
+
+.circleBackground {
+  stroke: #e0e0e0;
+}
+
+.circleProgress {
+  stroke: #4caf50;
+  transition: stroke-dashoffset 0.3s ease;
+}
+
+.progressText {
+  font-size: 20px;
+  font-weight: bold;
+
+}
+
+.result_list {
+  display: flex;
+  flex-direction: column;
+  gap: 45px;
+}
+
+.result_block {
+  padding: 30px;
+  border: 1px solid white;
+  border-radius: 13px;
+  box-shadow: 0 0 10px rgba(24, 24, 24, 0.25);
+    width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.result_block h1 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #707070
+}
+
+.result_title {
+  font-size: 26px;
+  margin: 30px 0 15px 0;
+}
+
+.result_block h2 {
+  margin-top: 15px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.result_block-answers {
+  margin: 30px 0;
+  display: flex;
+  flex-direction: column; 
+  align-items: flex-start; 
+  gap: 20px;
+}
+
+.answer {
+  padding: 8px 18px;
+  border: 1px solid 4caf50;
+  font-weight: 500;
+  border-radius: 13px;
+  box-shadow: 0 0 10px rgba(24, 24, 24, 0.25);
+}
+
+.answer-green {
+  padding: 8px 18px;
+  border: 1px solid 4caf50;
+  background-color: #4caf50 !important;
+  font-weight: 500;
+  color: var(--white);
+  border-radius: 13px;
+  box-shadow: 0 0 10px rgba(24, 24, 24, 0.25);
+}
+
+.answer-red {
+  padding: 8px 18px;
+  border: 1px solid #EB6557;
+  background-color: #EB6557;
+  font-weight: 500;
+  color: var(--white);
+  border-radius: 13px;
+  box-shadow: 0 0 10px rgba(24, 24, 24, 0.25);
+}
+
+
+.result_block-score {
+  float: right;
+}
+
+.light_green {
+  color: rgb(105, 207, 22) !important;
+}
+
+.green {
+  color: rgb(47, 100, 4) !important;
+}
+
+.orange {
+  color: rgb(203, 102, 1) !important;
+}
+
+.red {
+  color: rgb(230, 21, 21) !important;
+}
+
+.gray {
+  background: rgb(0, 0, 0) !important;
+}
+
+

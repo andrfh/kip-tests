@@ -1,0 +1,118 @@
+.contacts_blocks-block {
+    display: flex;
+    gap: 10px;
+    margin-top: 30px;
+    align-items: center;
+}
+
+.contacts {
+      transition: 0.3s all;
+
+}
+
+.contacts_blocks-block > img {
+    width: 45px;
+    height: 45px;
+
+}
+
+.contacts > h2 {
+    font-size: 32px;
+    font-weight: 600;
+    margin-top: 100px;
+    margin-bottom: 20px;
+}
+
+.contacts_faq {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.faq_text > button {
+    border: 1px solid #c9c9c9;
+    border-radius: 50%;
+    background-color: #F2F2F2;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.contacts_blocks-block > span {
+    min-width: 55px;
+    height: 55px;
+    background-color: #F2F2F2;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.text > h3 {
+    font-size: 28px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.contacts_faq-block {
+    border-bottom: 1px solid #ccc;
+    padding: 12px 0;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .faq_text {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .faq_text > h3{
+    font-size: 24px;
+  }
+
+  .faq_toggle {
+    background: none;
+    border: none;
+    font-size: 24px;
+    transition: transform 0.3s ease;
+  }
+  
+  .faq_answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, opacity 0.4s ease;
+    opacity: 0;
+  }
+  
+  .faq_answer.visible {
+    max-height: 200px; /* или побольше, если текст длинный */
+    opacity: 1;
+    margin-top: 8px;
+  }
+
+@media (min-width: 600px) and (max-width: 767px) {
+  .contacts {
+      padding: 0 20px;
+  }
+  .text > h3 {
+    font-size: 20px;
+
+}
+}
+
+  
+@media (max-width: 599px) {
+  .contacts {
+      padding: 0 20px;
+  }
+  .text > h3 {
+    font-size: 20px;
+
+}
+}

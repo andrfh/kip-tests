@@ -1,0 +1,23 @@
+.container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    width: 600px;
+
+}
+
+.container > h1{
+    font-size: 80px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.container > h2 {
+    margin-bottom: 10px;
+}
+
+.container > p {
+    margin-bottom: 20px;
+}

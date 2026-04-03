@@ -1,0 +1,106 @@
+.input_checkbox {
+  width: 100%;
+}
+.input_label {
+    margin-bottom: 15px;
+    text-align: left;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 15px;
+}
+
+.knobs,
+.layer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.button {
+  position: relative;
+  width: 100%;
+  max-width: 160px;
+  height: 36px;
+  overflow: hidden;
+  border-radius: 30px;
+}
+
+.button.r,
+.button.r .layer {
+  border-radius: 100px;
+}
+
+.checkbox {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 3;
+}
+
+.knobs {
+  z-index: 2;
+}
+
+.layer {
+  width: 100%;
+  background-color: #ebf7fc;
+  transition: 0.3s ease all;
+  z-index: 1;
+}
+
+
+/* Button 10 */
+#button-10 .knobs:before,
+#button-10 .knobs:after,
+#button-10 .knobs span {
+  position: absolute;
+  width: 80px;
+  height: 36px;
+  font-size: 10px;
+  font-weight: bold;
+  text-align: center;
+  font-size: 12px;
+  padding: 9px 17px;
+  border-radius: 30px;
+  transition: 0.3s ease all;
+  
+}
+
+#button-10 .knobs:before {
+  content: "";
+  left: 0px;
+  background: var(--primary-gradient);
+}
+
+#button-10 .knobs:after {
+  content: "Открыт";
+  right: 0px;
+  color: #323232;
+}
+
+#button-10 .knobs span {
+  display: inline-block;
+  left: 0px;
+  color: #fff;
+  z-index: 1;
+}
+
+#button-10 .checkbox:checked + .knobs span {
+  color: #4e4e4e;
+}
+
+#button-10 .checkbox:checked + .knobs:before {
+  left: 80px;
+  background-color: #f44336;
+}
+
+#button-10 .checkbox:checked + .knobs:after {
+  color: #fff;
+}
+

@@ -1,0 +1,87 @@
+
+.ticket_questions-btns {
+    display: flex;
+    gap: 30px;
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin: 30px 0;
+}
+
+.ticket_question {
+    max-width: 1400px;
+
+}
+
+.ticket_question > h1{
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.options_text {
+    margin-top: 15px;
+}
+
+.btn {
+    width: 150px;
+}
+
+.noClick {
+    pointer-events: none;    
+    opacity: 0.6;               
+}
+
+.options_btn {
+    display: inline-block;
+    padding: 10px 20px;
+    cursor: pointer;
+    min-width: 150px;
+
+    border: solid 1px var(--white);
+    border-radius: 20px;
+
+    background: #FFF;
+
+    box-shadow: 0 7px 35px var(--shadow);
+
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 16px;
+
+    transition: all 0.3s;
+}
+
+.btn:hover .options_btn {
+    color: var(--white);
+    border: solid 1px var(--primary);
+    background-color: var(--primary);
+    box-shadow: 0 0px 25px rgba(14, 61, 131, 0.5);
+}
+
+.ticket_question input {
+    margin-top: 15px;
+}
+
+@media (min-width: 600px) and (max-width: 767px) {
+  .ticket_questions-btns {
+        flex-direction: column;
+    }
+
+    .ticket_questions-btns > button {
+        margin: 0;
+    }
+}
+
+
+@media (max-width: 599px) {
+    .ticket_questions-btns {
+        flex-direction: column;
+    }
+
+    .ticket_questions-btns > button {
+        margin: 0;
+    }
+}

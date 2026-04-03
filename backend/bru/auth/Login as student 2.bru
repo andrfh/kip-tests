@@ -1,0 +1,27 @@
+meta {
+  name: Login as student 2
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{host}}/login/
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "username": "andrfh",
+    "password": "andrfh pw"
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.token: isNotEmpty
+}
+
+script:post-response {
+  bru.setVar("token", res.body.token)
+}

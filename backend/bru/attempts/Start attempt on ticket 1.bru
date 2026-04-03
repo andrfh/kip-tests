@@ -1,0 +1,17 @@
+meta {
+  name: Start attempt on ticket 1
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:8000/attempts/
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "ticket": 1
+  }
+}
