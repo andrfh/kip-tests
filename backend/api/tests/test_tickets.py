@@ -57,7 +57,7 @@ class TicketsTest(APITestCase):
             {
                 'id': 0,
                 'points': 1,
-                'answer_type': 'option',
+                'answer_type': 'text',
                 'text': 'Сколько решений у квадратного уравнения x^2 = 9?',
                 'options': [
                     '1',
@@ -70,7 +70,7 @@ class TicketsTest(APITestCase):
             {
                 'id': 1,
                 'points': 1,
-                'answer_type': 'options',
+                'answer_type': 'text',
                 'text': 'Какие из перечеслинных чисел являются решениями уравнения x^2 = 9?',
                 'options': [
                     '1',
@@ -78,7 +78,7 @@ class TicketsTest(APITestCase):
                     '4',
                     '-3'
                 ],
-                'correct_answer': ['-3', '3']
+                'correct_answer': '3'
             },
             {
                 'id': 2,

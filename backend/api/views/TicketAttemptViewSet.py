@@ -14,26 +14,13 @@ from api.permissions import TicketAttemptPermissions
 from api.serializers import ReadTicketAttemptSerializer, WriteTicketAttemptSerializer, ReadUnfinishedAttemptSerializer
 
 def calculate_points(questions, answers) -> tuple[int, dict]:
-    '''
-    Calculate total points for this attempt
-    Args:
-        questions (dict): Ticket's questions
-        answers (dict): Students's answers
-
-    Returns:
-        points (int): Total points
-        answers (dict): Mutated answers with new key 'points' conataining value of
-        points for this particular answer
-
-    '''
     points = 0
     for answer in answers:
         id = answer['id']
         question = next(q for q in questions if q['id'] == id)
         if question:
             answer['points'] = 0
-            # sort answer so the order of multiple choices won't matter
-            if sorted(answer['answer']) == sorted(question['correct_answer']):
+            if answer['answer'] == question['correct_answer']:
                 answer['points'] = question['points']
                 points += question['points']
     return points, answers
@@ -83,7 +70,15 @@ class TicketAttemptViewSet(viewsets.ModelViewSet):
 
         data = request.data.copy()
 
-        ticket = Ticket.objects.get(pk=data['ticket'])
+        ticket = get_object_or_404(Ticket, pk=data['ticket'])
+
+        try:
+            ticket = Ticket.objects.select_related('study_group').get(pk=data.get('ticket'))
+        except (Ticket.DoesNotExist, ValueError, TypeError):
+            return Response(
+                {'detail': 'Билет не найден.'},
+                status=status.HTTP_404_NOT_FOUND
+            )
 
         if ticket.study_group != StudentProfile.objects.get(student=request.user).study_group:
             return Response('Учебная группа билета и студента не совпадают.',

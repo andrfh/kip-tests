@@ -1,7 +1,7 @@
 import styles from './Ticket.module.css'
 import { Link } from 'react-router-dom';
 import Button from '../Button/Button'
-import axios from 'axios';
+import api from '../../../api/axios';
 import { useEffect, useState, useContext } from 'react';
 import close from '../../../Images/close.svg'
 import '@coreui/coreui/dist/css/coreui.min.css'
@@ -22,13 +22,11 @@ const Ticket = ({name, width, isProcessing, process, group, subject, btns, state
     const [visible, setVisible] = useState(false)
     const [resultVisible, setResultVisible] = useState(false)
     const [load, setLoad] = useState(false)
-    let token = JSON.parse(localStorage.getItem('t'))
     const { user } = useContext(UserContext)
     const navigate = useNavigate()
     const notify = (text) => toast.error(text);
     const { attemptInfo, setAttemptInfo } = useContext(UserContext)
 
-    console.log(created_at)
     function getRemainingTime(startTimeStr, maxTimeInSeconds) {
         const startTime = new Date(startTimeStr);
         const now = new Date();
@@ -44,18 +42,16 @@ const Ticket = ({name, width, isProcessing, process, group, subject, btns, state
     const startTicket = (event) => {
         setLoad(true)
         event.preventDefault();
-        axios
-          .post(`${__API_ROOT__}/attempts/`, {ticket: Number(id)}, { headers: { Authorization: `Token ${token}`}})
+        api
+          .post('/attempts/', {ticket: Number(id)})
           .then((response) => {
             let data = response.data;   
-            console.log(getRemainingTime(data.started_at, time))
             setAttemptInfo({
                 seconds: getRemainingTime(data.started_at, time),
                 question_id: 1,
                 points: data.questions[0].points,
                 subject: subject
             })
-            console.log(attemptInfo)
             localStorage.setItem('aid', JSON.stringify(data.id))
             navigate(`/ticket/${data.id}`)
             setLoad(false)
@@ -64,7 +60,6 @@ const Ticket = ({name, width, isProcessing, process, group, subject, btns, state
             if (error?.response.status == 406) {
                 notify("Больше попыток нет!")
             }
-            console.log(error)
             setLoad(false)
           })
         }

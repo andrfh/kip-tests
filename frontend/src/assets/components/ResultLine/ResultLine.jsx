@@ -1,18 +1,10 @@
 import styles from '../ResultLine/ResultLine.module.css'
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useState } from 'react';
 import Button from "../Button/Button";
-import { CModal, CModalHeader, CModalTitle, CModalBody, CModalFooter, CButton } from '@coreui/react'
 import ModalResult from '../ModalResult/ModalResult';
 
 const ResultLine = ({item, index}) => {
-    const [ticket, setTicket] = useState([])
     const [resultVisible, setResultVisible] = useState(false)
-    // useEffect(() => {
-    //     axios.get(`${__API_ROOT__}/tickets/${item.ticket.id}`, { headers: { Authorization: `Token ${userData.token}`}}).then((resp) => {
-    //         setTicket(resp.data);
-    //       });        
-    // }, [])
 
     const formatTime = (seconds) => {
         const hrs = Math.floor(seconds / 3600);

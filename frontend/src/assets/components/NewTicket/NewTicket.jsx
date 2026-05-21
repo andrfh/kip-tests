@@ -4,7 +4,7 @@ import useLocalStorage from '../../../hooks/use-localstorage.hook';
 import { useState, useContext } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import axios from 'axios';
+import api from '../../../api/axios';
 import { UserContext } from '../Context/user.context';
 
 
@@ -28,7 +28,6 @@ const NewTicket = () => {
                 }
             ]
         })
-    let userToken = JSON.parse(localStorage.getItem('t'))
     const [tickets, setTickets] = useLocalStorage('tickets', [])
     
     const INITIAL_LS_DATA = {
@@ -89,6 +88,7 @@ const NewTicket = () => {
             questions: 
                 items.questions.map(item => {
                     return {
+                        answer_type: 'text',
                         correct_answer: item.answer,
                         points: Number(item.score),
                         text: item.question,
@@ -101,8 +101,8 @@ const NewTicket = () => {
             time_limit_seconds: timeToSeconds(values.time)
         }
         setTickets(Array(...tickets, newTicket))
-        axios
-          .post(`${__API_ROOT__}/tickets/`, serverTicket, {headers: { Authorization: `Token ${userToken}`}})
+        api
+          .post('/tickets/', serverTicket)
           .then(console.log(serverTicket))
           .then((response) => {
             if (response.request.status.toString()[0] == 2) {

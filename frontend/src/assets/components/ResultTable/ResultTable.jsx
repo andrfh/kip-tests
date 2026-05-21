@@ -1,6 +1,6 @@
 import React, { useState, useEffect,useContext } from "react";
 import styles from '../ResultTable/ResultTable.module.css'
-import axios from "axios";
+import api from '../../../api/axios';
 import Button from "../Button/Button";
 import Input from "../Input/Input";
 import ResultLine from "../ResultLine/ResultLine";
@@ -13,9 +13,8 @@ const ResultTable = () => {
     const { open, detailsOpen } = useContext(UserContext)
     const [searchQuery, setSearchQuery] = useState('');
 
-    let userToken = JSON.parse(localStorage.getItem('t'))
     useEffect(() => {
-        axios.get(`${__API_ROOT__}/attempts/`, { headers: { Authorization: `Token ${userToken}`}}).then((resp) => {
+        api.get('/attempts/').then((resp) => {
             setResult(resp.data);
           });         
     }, [])

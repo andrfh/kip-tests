@@ -24,7 +24,7 @@ class TicketAttemptsTest(APITestCase):
                 },
                 {
                     'id': 1,
-                    'answer': ['4', '3'], # неправильно
+                    'answer': '4', # неправильно
                 },
                 {
                     'id': 2,
@@ -43,7 +43,7 @@ class TicketAttemptsTest(APITestCase):
                 },
                 {
                     'id': 1,
-                    'answer': ['-3', '3'], # правильно
+                    'answer': '3', # правильно
                 },
                 {
                     'id': 2,
@@ -71,7 +71,7 @@ class TicketAttemptsTest(APITestCase):
                 {
                     'id': 0,
                     'points': 1,
-                    'answer_type': 'option',
+                    'answer_type': 'text',
                     'text': 'Сколько решений у квадратного уравнения x^2 = 9?',
                     'options': [
                         '1',
@@ -84,7 +84,7 @@ class TicketAttemptsTest(APITestCase):
                 {
                     'id': 1,
                     'points': 1,
-                    'answer_type': 'options',
+                    'answer_type': 'text',
                     'text': 'Какие из перечеслинных чисел являются решениями уравнения x^2 = 9?',
                     'options': [
                         '1',
@@ -92,7 +92,7 @@ class TicketAttemptsTest(APITestCase):
                         '4',
                         '-3'
                     ],
-                    'correct_answer': ['-3', '3']
+                    'correct_answer': '3'
                 },
                 {
                     'id': 2,
@@ -126,13 +126,29 @@ class TicketAttemptsTest(APITestCase):
         # devs but i'll leave it till some better times when i won't have as
         # much things to do
         response = self.client.post('/attempts/', json.dumps(self.attempt_data_2of3_points), content_type='application/json')
-        response_data = response.json()
         self.assertEqual(201, response.status_code)
+        attempt_id = response.json()['id']
+
+        response = self.client.post(
+            f'/attempts/{attempt_id}/submit/',
+            json.dumps(self.attempt_data_2of3_points['answers']),
+            content_type='application/json'
+        )
+        response_data = response.json()
+        self.assertEqual(200, response.status_code)
         self.assertEqual(2, response_data['points'])
 
         response = self.client.post('/attempts/', json.dumps(self.attempt_data_1of3_points), content_type='application/json')
-        response_data = response.json()
         self.assertEqual(201, response.status_code)
+        attempt_id = response.json()['id']
+
+        response = self.client.post(
+            f'/attempts/{attempt_id}/submit/',
+            json.dumps(self.attempt_data_1of3_points['answers']),
+            content_type='application/json'
+        )
+        response_data = response.json()
+        self.assertEqual(200, response.status_code)
         self.assertEqual(1, response_data['points'])
 
     def test_post_attempt_with_different_group(self):

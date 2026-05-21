@@ -23,7 +23,6 @@ class Student(User):
     class Meta:
         proxy = True
 
-    # TODO: uhhh
     objects = StudentManager()
 
     @property

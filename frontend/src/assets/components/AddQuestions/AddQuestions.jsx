@@ -6,7 +6,7 @@ import Input from '../Input/Input';
 import Checkbox from '../TicketCheckbox/TicketCheckbox';
 import Button from '../Button/Button';
 import Textarea from '../Textarea/Textarea'
-import axios from 'axios';
+import api from '../../../api/axios';
 import TimeInput from '../TimeInput/TimeInput';
 
 const AddQuestions = ({ ticket, setTicket, onSubmit, data, saveData, addQuestion, setData, clearForm}) => {
@@ -14,7 +14,6 @@ const AddQuestions = ({ ticket, setTicket, onSubmit, data, saveData, addQuestion
 	const { isFormReadyToSubmit, values, isValid } = formState;
     const [subjects, setSubjects] = useState();
     const [groups, setGroups] = useState();
-    let userToken = JSON.parse(localStorage.getItem('t'))
     useEffect(() => {
         dispatchForm({ type: 'SET_VALUE', payload: {
             name: data.name || 'Новый билет',
@@ -28,11 +27,11 @@ const AddQuestions = ({ ticket, setTicket, onSubmit, data, saveData, addQuestion
             score: data.questions[0].score || ''
             
         }})
-        axios.get(`${__API_ROOT__}/subjects/`, { headers: { Authorization: `Token ${userToken}`}}).then((resp) => {
+        api.get('/subjects/').then((resp) => {
             setSubjects(resp.data);
             console.log(subjects)
           });
-        axios.get(`${__API_ROOT__}/study_groups`, { headers: { Authorization: `Token ${userToken}`}}).then((resp) => {
+        api.get('/study_groups/').then((resp) => {
             setGroups(resp.data);
             console.log(groups)
         });

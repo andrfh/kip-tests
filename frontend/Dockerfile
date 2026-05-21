@@ -1,10 +1,16 @@
-from node:alpine
+# frontend/Dockerfile
 
-workdir /app
+FROM node:20-alpine AS builder
 
-copy ./src ./src
-copy ./index.html ./package.json ./package-lock.json ./vite.config.js .
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production=false
+COPY . .
+RUN npm run build
 
-run npm install && npm run build
+# Nginx для статики
+FROM nginx:alpine
+COPY --from=builder /app/dist /usr/share/nginx/html
+COPY nginx-frontend.conf /etc/nginx/conf.d/default.conf
 
-cmd npm run preview -- --host 0.0.0.0 --port 3000
+EXPOSE 80

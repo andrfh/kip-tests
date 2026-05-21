@@ -1,85 +1,94 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets
-from rest_framework import status
-from rest_framework.decorators import api_view
-from rest_framework.fields import json
+from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.views import Request, Response
+from rest_framework.request import Request
+from rest_framework.response import Response
 
 from api.models import StudentProfile, Ticket, User
 from api.models.TicketAttempt import TicketAttempt
 from api.permissions import TicketPermission
-from api.serializers import ReadTicketSerializer, WriteTicketSerializer
-from api.serializers import NoQuestionsTicketSerializer
+from api.serializers import ReadTicketSerializer, WriteTicketSerializer, NoQuestionsTicketSerializer
 
-def calculate_attempts_left_field(ticket: Ticket, student: User) -> int:
-    return ticket.max_attempts - TicketAttempt.objects.filter(ticket=ticket, student=student).count()
+from api.audit import log_action
+from api.models.AuditLog import AuditLog
+
+def _attempts_left(ticket: Ticket, student: User) -> int:
+    used = TicketAttempt.objects.filter(ticket=ticket, student=student).count()
+    return max(0, ticket.max_attempts - used)
+
 
 class TicketViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated, TicketPermission]
-    queryset = Ticket.objects.all()
+    queryset = Ticket.objects.select_related('subject', 'study_group', 'author').all()
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
-            # Do not include questions if:
-            # 1. This is not a detail request (getting a list of tickets)
-            # 2. This is a detail request, but was made by a student
             if self.action == 'retrieve' and self.request.user.role == User.Role.TEACHER:
                 return ReadTicketSerializer
-            else:
-                return NoQuestionsTicketSerializer
-        else:
-            return WriteTicketSerializer
+            return NoQuestionsTicketSerializer
+        return WriteTicketSerializer
 
     def get_queryset(self):
-        queryset = super().get_queryset()
+        """
+        Фильтрует queryset по роли пользователя.
+        Пользователь видит ТОЛЬКО свои объекты — это ownership check на уровне списка.
+        Попытка получить чужой объект по ID вернёт 404, а не 403.
+        """
+        user = self.request.user
+        qs = Ticket.objects.select_related('subject', 'study_group', 'author')
 
-        if self.request.user.role == User.Role.TEACHER:
-            queryset = Ticket.objects.filter(author=self.request.user)
-        elif self.request.user.role == User.Role.STUDENT:
-            queryset = Ticket.objects.filter(study_group=StudentProfile.objects.get(student=self.request.user).study_group)
+        if user.role == User.Role.ADMIN:
+            return qs.all()
 
-        return queryset
+        if user.role == User.Role.TEACHER:
+            return qs.filter(author=user)
+
+        if user.role == User.Role.STUDENT:
+            try:
+                profile = StudentProfile.objects.select_related('study_group').get(student=user)
+                return qs.filter(study_group=profile.study_group)
+            except StudentProfile.DoesNotExist:
+                return qs.none()
+
+        return qs.none()
 
     def list(self, request: Request):
         self.check_permissions(request)
-
         queryset = self.get_queryset()
-
         serializer = self.get_serializer_class()(queryset, many=True)
-        data = serializer.data.copy()
+        data = list(serializer.data)
 
-        if self.request.user.role == User.Role.STUDENT:
-            for i in range(len(data)):
-                data[i]['attempts_left'] = calculate_attempts_left_field(ticket=queryset[i], student=request.user)
+        if request.user.role == User.Role.STUDENT:
+            for i, ticket_obj in enumerate(queryset):
+                data[i]['attempts_left'] = _attempts_left(ticket_obj, request.user)
 
         return Response(data, status.HTTP_200_OK)
 
-    def retrieve(self, request: Request, pk=None) -> Response:
+    def retrieve(self, request: Request, pk=None):
         self.check_permissions(request)
-
         ticket = get_object_or_404(self.get_queryset(), pk=pk)
-        seralizer = self.get_serializer_class()(instance=ticket)
+        serializer = self.get_serializer_class()(instance=ticket)
+        data = dict(serializer.data)
 
-        data = seralizer.data
-
-        if self.request.user.role == User.Role.STUDENT:
-            data['attempts_left'] = calculate_attempts_left_field(ticket=ticket, student=request.user)
+        if request.user.role == User.Role.STUDENT:
+            data['attempts_left'] = _attempts_left(ticket, request.user)
 
         return Response(data, status.HTTP_200_OK)
 
     def create(self, request: Request):
         self.check_permissions(request)
-
         ticket_data = request.data.copy()
-
         ticket_data['author'] = request.user.id
 
-        ticket_data['questions'] = json.dumps(ticket_data['questions'], ensure_ascii=False)
-
-        serializer = self.get_serializer_class()(data=ticket_data)
+        serializer = WriteTicketSerializer(data=ticket_data)
         if serializer.is_valid():
             serializer.save()
+            ticket = serializer.save()
+            # логирование создания билета
+            log_action(request, AuditLog.Action.TICKET_CREATED, details={
+                'ticket_id': ticket.pk,
+                'ticket_name': ticket.name,
+            })
             return Response(serializer.data, status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)

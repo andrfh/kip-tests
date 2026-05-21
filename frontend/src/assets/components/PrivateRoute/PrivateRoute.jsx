@@ -1,23 +1,26 @@
 import { Navigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { UserContext } from '../../components/Context/user.context'
-import { useNavigate } from 'react-router-dom';
 
 
-const PrivateRoute = ({ children }) => {
-  const { user, token } = useContext(UserContext);
-  console.log('User:', token);
+const PrivateRoute = ({ children, allowedRoles }) => {
+  const { authReady, isAuthenticated, user } = useContext(UserContext);
 
-  const navigate = useNavigate()
+  if (!authReady) {
+    return <div>Loading...</div>;
+  }
 
-  if (!token) {
-    console.log('Редирект на логин');
-
-
+  if (!isAuthenticated) {
     return <Navigate to="/"  />;
+  }
+
+  if (allowedRoles && !allowedRoles.includes(user.role)) {
+    return <Navigate to="/error/403" replace />;
   }
 
   return children;
 };
 
 export default PrivateRoute;
+
+

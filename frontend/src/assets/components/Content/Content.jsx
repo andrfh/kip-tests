@@ -3,7 +3,7 @@ import Ticket from '../Ticket/Ticket'
 import moment from 'moment';
 import useLocalStorage from '../../../hooks/use-localstorage.hook';
 import { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+import api from '../../../api/axios';
 import { UserContext } from '../Context/user.context';
 import squares from '../../../Images/Squares.svg'
 import strokes from '../../../Images/Strokes.svg'
@@ -24,13 +24,12 @@ const Content = () => {
 
     let filterWindows = isFiltersOpen ? '-40px' : '-390px'
     // const { userData, setUserData } = useContext(UserContext);
-    let userToken = JSON.parse(localStorage.getItem('t'))
     useEffect(() => {
-      axios.get(`${__API_ROOT__}/tickets/`, { headers: { Authorization: `Token ${userToken}`}}).then((resp) => {
+      api.get('/tickets/').then((resp) => {
         const allTickets = resp.data;
         setTickets(allTickets);
       });
-      axios.get(`${__API_ROOT__}/subjects/`, { headers: { Authorization: `Token ${userToken}`}}).then((resp) => {
+      api.get('/subjects/').then((resp) => {
         setSubjects(resp.data);
       });
     }, []);

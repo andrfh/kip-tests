@@ -1,10 +1,5 @@
-import os
 import glob
-
-try:
-    os.remove('db.sqlite')
-except FileNotFoundError:
-    pass
+import os
 
 MIGRATIONS = glob.glob('api/migrations/0*.py')
 

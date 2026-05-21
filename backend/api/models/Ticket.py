@@ -9,7 +9,6 @@ class Ticket(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.SET_NULL, null=True)
     study_group = models.ForeignKey(StudyGroup, on_delete=models.SET_NULL, null=True)
     is_open = models.BooleanField(default=True)
-    opens_at = models.DateTimeField(null=True)
     closes_at = models.DateTimeField(null=True)
     questions = models.JSONField()
     max_points = models.SmallIntegerField()

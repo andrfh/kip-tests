@@ -3,7 +3,7 @@ import Ticket from '../Ticket/Ticket'
 import moment from 'moment';
 import useLocalStorage from '../../../hooks/use-localstorage.hook';
 import { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+import api from '../../../api/axios';
 import { UserContext } from '../Context/user.context';
 import Button from '../Button/Button';
 import logo from '../../../Images/logo_head.svg'
@@ -16,17 +16,16 @@ const Home = () => {
     const { setQuestions } = useContext(UserContext)
     const [tickets, setTickets] = useState([]);
     const [attempts, setAttempts] = useState([])
-    let userToken = JSON.parse(localStorage.getItem('t'))
     const { open, detailsOpen } = useContext(UserContext)
     const activeTickets = tickets.filter(ticket => ticket.attempts_left !== 0);
 
 
     useEffect(() => {
-      axios.get(`${__API_ROOT__}/tickets/`, { headers: { Authorization: `Token ${userToken}`}}).then((resp) => {
+      api.get('/tickets/').then((resp) => {
         setTickets(resp.data);
         setQuestions(resp.data.length)
       });
-      axios.get(`${__API_ROOT__}/attempts/`, { headers: { Authorization: `Token ${userToken}`}}).then((resp) => {
+      api.get('/attempts/').then((resp) => {
         setAttempts(resp.data);
       });
     }, []);
@@ -51,7 +50,6 @@ const Home = () => {
                                         const lastAttempt = relatedAttempts[0];
                                         
                                         const isProcessing = lastAttempt?.finished_at === null;
-                                        console.log(isProcessing)
 
                                         return (
                                             <Ticket
@@ -83,21 +81,6 @@ const Home = () => {
                         </div> 
                     </div>
                 </div>
-        //         <footer className={styles["home_footer"]}>
-        //             <p>©2025 KIPZACHETY</p>
-        //         </footer>
-        //         <h2 className={styles["main_tickets"]}>Учебные группы</h2>
-        //         <div className={styles["groups"]}>
-        //             <div className={styles["groups_block"]}>
-        //                 <h3 className={styles["groups_block-title"]}>3ОИБАС-922</h3>
-        //                 <p className={styles["groups_block-students"]}>Студентов: 25</p>
-        //                 <p className={styles["groups_block-ticket"]}>Активные билеты: 0</p>
-        //                 <Button type='button' style='primary' text='Подробнее' onClick={()=>{console.log('КОнец')}}/>
-
-        //             </div>
-        //         </div>
-        //     </div>
-        // </main>
         
         
     );

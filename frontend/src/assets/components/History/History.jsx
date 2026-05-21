@@ -2,7 +2,7 @@ import './History.css'
 import Ticket from '../Ticket/Ticket';
 import Input from '../Input/Input';
 import filters from '../../../Images/filters.svg'
-import axios from 'axios';
+import api from '../../../api/axios';
 import { useState, useEffect,useContext } from 'react';
 import { UserContext } from '../Context/user.context.jsx';
 import squares from '../../../Images/Squares.svg'
@@ -15,9 +15,8 @@ const History = () => {
     const [isSquare, setIsSquare] = useState(false)
     const { open, detailsOpen } = useContext(UserContext)
 
-    let userToken = JSON.parse(localStorage.getItem('t'))
     useEffect(() => {
-      axios.get(`${__API_ROOT__}/attempts/`, { headers: { Authorization: `Token ${userToken}`}}).then((resp) => {
+      api.get('/attempts/').then((resp) => {
         setResult(resp.data);
       });
     }, []);

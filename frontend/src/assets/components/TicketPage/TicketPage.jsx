@@ -1,7 +1,7 @@
 import styles from '../TicketPage/TicketPage.module.css'
 import { useParams } from 'react-router-dom';
 import { useState, useEffect, useReducer, useContext } from 'react';
-import axios from 'axios';
+import api from '../../../api/axios';
 import QuestionLink from '../QuestionLink/QuestionLink';
 import TicketQuestion from '../TicketQuestion/TicketQuestion';
 import { INITIAL_STATE, formReducer } from './TicketPage.state';
@@ -20,7 +20,6 @@ const TicketPage = () => {
 	const { isFormReadyToSubmit, values, isValid } = formState;
     const [time, setTime] = useState(0);
     const [isRunning, setIsRunning] = useState(true);
-    let token = JSON.parse(localStorage.getItem('t'))
     // let attempt_id = JSON.parse(localStorage.getItem('aid'))
     const [answers, setAnswers] = useLocalStorage('answers', [])
     const { attemptInfo, setAttemptInfo } = useContext(UserContext)
@@ -48,8 +47,7 @@ const TicketPage = () => {
     }, [isRunning]);
     const stopTimer = () => setIsRunning(false);
     useEffect(() => {
-        const apiUrl = `${__API_ROOT__}/attempts/${attempt_id}`;
-        axios.get(apiUrl, { headers: { Authorization: `Token ${token}`}}).then((resp) => {
+        api.get(`/attempts/${attempt_id}`).then((resp) => {
             setActive(0)
             setTicket(resp.data);
             if (resp.data.finished_at) {
@@ -94,14 +92,6 @@ const TicketPage = () => {
     //         score: data.questions[0].score || ''
             
     //     }})
-    //     axios.get(`${__API_ROOT__}/subjects/`, { headers: { Authorization: `Token ${userData.token}`}}).then((resp) => {
-    //         setSubjects(resp.data);
-    //         console.log(subjects)
-    //       });
-    //     axios.get(`${__API_ROOT__}/study_groups`, { headers: { Authorization: `Token ${userData.token}`}}).then((resp) => {
-    //         setGroups(resp.data);
-    //         console.log(groups)
-    //     });
     // }, [])
 
     const addQuestionsItem = (e) => {
@@ -118,8 +108,8 @@ const TicketPage = () => {
         let newBody = {
             answers: answers
         }
-        axios
-          .post(`${__API_ROOT__}/attempts/${attempt_id}/submit/`, newBody.answers, {headers: { Authorization: `Token ${token}`}})
+        api
+          .post(`/attempts/${attempt_id}/submit/`, newBody.answers)
           .then(console.log(newBody))
           .then((response) => {
             if (response.request.status.toString()[0] == 2) {
@@ -202,8 +192,6 @@ const TicketPage = () => {
                         setActive={setActive} 
                         question={ticket.questions[active]?.text} 
                         id={ticket.questions[active]?.id} 
-                        answer_type={ticket.questions[active]?.answer_type} 
-                        options={ticket.questions[active]?.options} 
                         count={ticket.questions?.length}/>
                 </>
                 : <>loading...</>}

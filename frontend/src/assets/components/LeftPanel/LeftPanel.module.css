@@ -15,7 +15,7 @@
   border-radius: 20px;
   box-shadow: 0 4px 34px var(--shadow);
 
-  grid-template-rows: 98px auto 170px;
+  grid-template-rows: 98px auto;
 }
 
 .sidebar-nav > h2 {

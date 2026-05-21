@@ -1,0 +1,107 @@
+# docker-compose.yml
+
+version: '3.9'
+
+services:
+  # База данных PostgreSQL
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-kip_tests}
+      POSTGRES_USER: ${POSTGRES_USER:-kip_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      # Инициализирующий скрипт (опционально)
+      # - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-kip_user} -d ${POSTGRES_DB:-kip_tests}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - internal
+
+  # Django backend
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    env_file: ./backend/.env
+    environment:
+      DEBUG: "False"
+      POSTGRES_HOST: db
+      AUTH_COOKIE_SECURE: "True"
+    depends_on:
+      db:
+        condition: service_healthy
+    command: >
+      sh -c "python manage.py migrate --noinput &&
+             python manage.py collectstatic --noinput &&
+             gunicorn tickets.wsgi:application
+             --bind 0.0.0.0:8000
+             --workers 3
+             --timeout 30"
+    volumes:
+      - static_files:/app/staticfiles
+    networks:
+      - internal
+
+  # React frontend
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+    networks:
+      - internal
+
+  # Nginx reverse proxy
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      # - "443:443"  # раскомментировать при наличии SSL
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - static_files:/app/staticfiles:ro
+      # - ./nginx/ssl:/etc/nginx/ssl:ro  # SSL сертификаты
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - internal
+      - external
+
+    # Добавить в services:
+  backup:
+    image: postgres:16-alpine
+    restart: "no"
+    profiles: ["backup"]  # запускается только явно: docker-compose --profile backup run backup
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-kip_tests}
+      POSTGRES_USER: ${POSTGRES_USER:-kip_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - ./backups:/backups
+    depends_on:
+      db:
+        condition: service_healthy
+    command: >
+      sh -c "pg_dump -h db -U $${POSTGRES_USER} -d $${POSTGRES_DB}
+             --format=custom --compress=9
+             -f /backups/kip_tests_$$(date +%Y%m%d_%H%M%S).dump
+             && echo 'Backup completed'"
+    networks:
+      - internal
+
+volumes:
+  postgres_data:
+  static_files:
+
+networks:
+  internal:
+    driver: bridge
+    internal: true   # внутренняя сеть недоступна снаружи
+  external:
+    driver: bridge

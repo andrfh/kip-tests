@@ -6,8 +6,8 @@ from datetime import datetime, timedelta
 def run():
     teacher_1_data = {
         'role': User.Role.TEACHER,
-        'password': make_password('sdavydov pw'),
-        'username': 'sdavydov',
+        'password': make_password('teacher1 pw'),
+        'username': 'Teacher1',
         'first_name': 'Сергей',
         'last_name': 'Давыдов',
         'surname': 'Иванович',
@@ -15,8 +15,8 @@ def run():
 
     teacher_2_data = {
         'role': User.Role.TEACHER,
-        'password': make_password('dsuvorov pw'),
-        'username': 'dsuvorov',
+        'password': make_password('teacher2 pw'),
+        'username': 'Teacher2',
         'first_name': 'Дмитрий',
         'last_name': 'Суворов',
         'surname': 'Алексеевич',
@@ -24,8 +24,8 @@ def run():
 
     student_1_data = {
         'role': User.Role.STUDENT,
-        'password': make_password('lehaz pw'),
-        'username': 'lehaz',
+        'password': make_password('student1 pw'),
+        'username': 'Student1',
         'first_name': 'Алексей',
         'last_name': 'Затравкин',
         'surname': 'Дмитриевич',
@@ -33,8 +33,8 @@ def run():
 
     student_2_data = {
         'role': User.Role.STUDENT,
-        'password': make_password('andrfh pw'),
-        'username': 'andrfh',
+        'password': make_password('student2 pw'),
+        'username': 'Student2',
         'first_name': 'Андрей',
         'last_name': 'Солонович',
         'surname': 'Дмитриевич',
@@ -68,7 +68,7 @@ def run():
             {
                 'id': 0,
                 'points': 1,
-                'answer_type': 'option',
+                'answer_type': 'text',
                 'text': 'Сколько решений у квадратного уравнения x^2 = 9?',
                 'options': [
                     '1',
@@ -81,7 +81,7 @@ def run():
             {
                 'id': 1,
                 'points': 1,
-                'answer_type': 'options',
+                'answer_type': 'text',
                 'text': 'Какие из перечеслинных чисел являются решениями уравнения x^2 = 9?',
                 'options': [
                     '1',
@@ -89,7 +89,7 @@ def run():
                     '4',
                     '-3'
                 ],
-                'correct_answer': ['-3', '3']
+                'correct_answer': '3'
             },
             {
                 'id': 2,
@@ -116,7 +116,7 @@ def run():
             {
                 'id': 0,
                 'points': 1,
-                'answer_type': 'option',
+                'answer_type': 'text',
                 'text': 'Сколько решений у квадратного уравнения x^2 = 9?',
                 'options': [
                     '1',
@@ -129,7 +129,7 @@ def run():
             {
                 'id': 1,
                 'points': 1,
-                'answer_type': 'options',
+                'answer_type': 'text',
                 'text': 'Какие из перечеслинных чисел являются решениями уравнения x^2 = 9?',
                 'options': [
                     '1',
@@ -137,7 +137,7 @@ def run():
                     '4',
                     '-3'
                 ],
-                'correct_answer': ['-3', '3']
+                'correct_answer': '3'
             },
             {
                 'id': 2,

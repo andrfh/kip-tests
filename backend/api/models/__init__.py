@@ -1,3 +1,4 @@
+from .AuditLog import AuditLog
 from .User import User
 from .Student import Student
 from .StudyGroup import StudyGroup
